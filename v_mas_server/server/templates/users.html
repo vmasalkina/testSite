@@ -1,0 +1,19 @@
+{% load static %}
+{% static "sharp_delete_outline_black_18dp.png" as delIcon %}
+{% static "sharp_add_black_18dp.png" as addIcon %}
+{% static "sharp_create_black_18dp.png" as editIcon %}
+<table>
+{% for user in users %}
+<tr>
+    <td>{{ user.id }}</td>
+    <td>{{ user.username }}</td>
+    <td>{{ editIcon }}</td>
+    <td>{{ delIcon }}</td>
+</tr>
+{% endfor %}
+<tr>
+    <td></td>
+    <td></td>
+    <td>{{ addIcon }}</td>
+</tr>
+</table>
