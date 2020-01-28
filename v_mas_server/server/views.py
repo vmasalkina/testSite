@@ -13,7 +13,8 @@ def statistics(request):
     d = Data.objects.filter(user=user)
     data = {i.timestamp.timestamp(): i.value for i in d}
     #data[i['timestamp'].strftime('%d.%m.%Y %H:%M')]
-    return JsonResponse(data)
+    return TemplateResponse(request, 'statistics.html', {'data': data, 'user': user})
+    #return JsonResponse(data)
 
 def is_superuser(user):
     return user.is_superuser

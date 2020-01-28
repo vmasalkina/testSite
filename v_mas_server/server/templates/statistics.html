@@ -1,0 +1,27 @@
+{% extends "index.html" %}
+{% block stat_plotly %}
+   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+{% endblock %}
+{% block stat_graph %}
+  <div id="graph"></div>
+  <script>
+      var x = [];
+      {% for time in data %} 
+        var d = new Date({{time}}*1000);
+        x.push(d);
+      {% endfor %}
+      var TESTER = document.getElementById('graph');
+      var layout = {
+        showlegend: false,
+        height: 600,
+        width: 1200,
+        xaxis: {
+          tick0: "2020-01-23",
+          dtick: 300000,
+        },
+      };
+      Plotly.newPlot( TESTER, [{
+      x: x,
+      y: Object.values({{ data }}) }], layout);
+  </script>
+{% endblock %}

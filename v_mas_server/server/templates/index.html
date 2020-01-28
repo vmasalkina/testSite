@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {% load static %}
+    <script type="text/javascript" src='{% static "executes.js" %}'></script>
+    <link rel="stylesheet" href='{% static "style.css" %}'/>
+    {% block stat_plotly %}{% endblock %}
+  </head>
+  <body>
+    <div id="body">
+    <div id="sidebar">
+      <button type="button" disabled="true">
+        <div class="menu">
+	  {{ user.username }}
+        </div>
+      </button>
+      <button type="button" onclick="executeStatistics()
+			               .then(text => {
+			                 console.log(text);
+	                                 document.body.innerHTML = text;
+			               })
+			               .catch(error => {
+			                 console.log(error);
+				       })">
+        <div class="menu button">
+          Статистика
+        </div>
+      </button>
+      <button type="button">
+        <div class="menu button">
+          Пользователи
+        </div>
+      </button>
+      <button type="button">
+        <div class="menu button">
+          Выход
+        </div>
+      </button>
+    </div>
+    <div id="content">
+      {% block stat_graph %}{% endblock %}
+    </div>
+    </div>
+  </body>
+</html>
