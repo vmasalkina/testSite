@@ -1,27 +1,62 @@
 {% extends "index.html" %}
-{% block stat_plotly %}
+{% load static %}
+{% block head_block %}
    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-{% endblock %}
-{% block stat_graph %}
-  <div id="graph"></div>
-  <script>
-      var x = [];
-      {% for time in data %} 
-        var d = new Date({{time}}*1000);
-        x.push(d);
-      {% endfor %}
-      var TESTER = document.getElementById('graph');
+   <script type="text/javascript" src='{% static "get5min.js" %}'></script>
+   <script type="text/javascript">
+     function getGraph(step) {
+      const results = getGraphData({{ data }}, step);
+      var container = document.getElementById('graph');
+      var minTrace = {x: results[0], y: results[1]};
+      var maxTrace = {x: results[0], y: results[2]};
+      var aveTrace = {x: results[0], y: results[3]};
+      var graphs = (step == '5') ? [minTrace] : [minTrace, maxTrace, aveTrace];
       var layout = {
         showlegend: false,
-        height: 600,
-        width: 1200,
+        height: 500,
+        width: 1000,
         xaxis: {
-          tick0: "2020-01-23",
+          tick0: results[4],
           dtick: 300000,
         },
       };
-      Plotly.newPlot( TESTER, [{
-      x: x,
-      y: Object.values({{ data }}) }], layout);
+      Plotly.newPlot( container, graphs, layout);
+     } 
+   </script>
+{% endblock %}
+{% block content %}
+  <div id="graph"></div>
+  <div class="body">
+      <button id="5m" class="select" type="button" onclick="getGraph('5');
+	                                                    document.getElementById('5m').className = 'select';
+							    document.getElementById('30m').className = '';">
+        <div class="text button">5m</div>
+      </button>
+      <button id="30m" type="button" onclick="getGraph('30');
+	                                      document.getElementById('5m').className = '';
+				              document.getElementById('30m').className = 'select';">
+        <div class="text button">30m</div>
+      </button>
+      <div class="text bottom">
+        <form method="post" action="{% url 'statistics' %}" >
+        {% csrf_token %}
+  	  Диапазон:
+          <span class="text bottom">{{ form.start }}</span>
+  	  -
+          <span class="text bottom">{{ form.end }}</span>
+          <input class="text button" type="submit" value="Показать" /></td>
+        </form>
+      </div>
+  </div>
+  <div class="body">
+      {% if form.errors %}
+        <div class="text bottom errors">{{ form.start.errors }}</div>
+        <div class="text bottom errors">{{ form.end.errors }}</div>
+      {% endif %}
+  </div>
+
+  <script type="text/javascript">
+      var step = ('select' in document.getElementById('5m').classList) ? '5' : '30';
+      getGraph(step);
   </script>
 {% endblock %}

@@ -1,17 +1,24 @@
-{% if form.errors %}
-<p>{{ form.errors }}</p>
-{% endif %}
-<form method="post" action="{% url 'create_user' %}">
-{% csrf_token %}
-<table>
-{% for field in form %}
-<tr>
-    <td>{{ field.label_tag }}</td>
-    <td>{{ field }}</td>
-</tr>
-{% endfor %}
-</table>
-
-<input type="submit" value="create" />
-<input type="submit" value="cancel" />
-</form>
+{% extends "index.html" %}
+{% block content %}
+  <form method="post" action="{% url 'create_user' %}" >
+  {% csrf_token %}
+    <table>
+      {% if form.non_field_errors %}
+        <tr>
+          <td class="text">{{ form.non_field_errors }}</td>
+        </tr>
+      {% endif %}
+      {% for field in form %}
+        <tr>
+          <td class="text">{{ field.label_tag }}</td>
+          <td class="text">{{ field }}</td>
+          <td class="text">{{ field.errors }}</td>
+        </tr>
+      {% endfor %}
+      <tr>
+        <td><input class="text button" type="submit" value="create" /></td>
+        <td><input class="text button" type="button" value="cancel" onclick="location.assign(location.protocol+'//'+location.host+'/server/users/')"/></td>
+      </tr>
+    </table>
+  </form>
+{% endblock %}

@@ -1,19 +1,19 @@
+{% extends "index.html" %}
 {% load static %}
-{% static "sharp_delete_outline_black_18dp.png" as delIcon %}
-{% static "sharp_add_black_18dp.png" as addIcon %}
-{% static "sharp_create_black_18dp.png" as editIcon %}
-<table>
-{% for user in users %}
-<tr>
-    <td>{{ user.id }}</td>
-    <td>{{ user.username }}</td>
-    <td>{{ editIcon }}</td>
-    <td>{{ delIcon }}</td>
-</tr>
-{% endfor %}
-<tr>
-    <td></td>
-    <td></td>
-    <td>{{ addIcon }}</td>
-</tr>
-</table>
+{% block content %}
+  <table>
+    {% for user in users %}
+    <tr>
+        <td class="text">{{ user.id }}</td>
+        <td class="text">{{ user.username }}</td>
+        <td><a href='{% url "user_password_change" user.id %}'><img src='{% static "sharp_create_black_18dp.png" %}'></a></td>
+        <td><a href='{% url "delete_user" user.id %}'><img src='{% static "sharp_delete_outline_black_18dp.png" %}'></td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td></td>
+        <td></td>
+        <td><a href='{% url "create_user" %}'><img src='{% static "sharp_add_black_18dp.png" %}'></td>
+    </tr>
+  </table>
+{% endblock %}

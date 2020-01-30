@@ -5,7 +5,6 @@ from server.views import *
 urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('password_change/', auth_views.PasswordChangeView.as_view(template_name='password_change.html', success_url='statistics'), name='password_change'),
     path('create_user/', create_user, name='create_user'),
     path('delete_user/<int:user_id>/', delete_user, name='delete_user'),
     path('statistics/', statistics, name='statistics'),

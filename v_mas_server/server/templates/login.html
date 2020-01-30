@@ -1,34 +1,42 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    {% load static %}
+    <link rel="stylesheet" href='{% static "style.css" %}'/>
+  </head>
   <body>
-    {% if form.errors %}
-    <p>Your username and password didn't match. Please try again.</p>
-    {% endif %}
-    
-    {% if next %}
-        {% if user.is_authenticated %}
-        <p>Your account doesn't have access to this page. To proceed,
-        please login with an account that has access.</p>
-        {% else %}
-        <p>Please login to see this page.</p>
-        {% endif %}
-    {% endif %}
-    
     <form method="post" action="{% url 'login' %}">
     {% csrf_token %}
-    <table>
-    <tr>
-        <td>{{ form.username.label_tag }}</td>
-        <td>{{ form.username }}</td>
-    </tr>
-    <tr>
-        <td>{{ form.password.label_tag }}</td>
-        <td>{{ form.password }}</td>
-    </tr>
-    </table>
-    
-    <input type="submit" value="login" />
-    <input type="hidden" name="next" value="{{ next }}" />
+      <table>
+        {% if form.errors %}
+          <tr>
+            <td class="text">Your username and password didn't match. Please try again.</td>
+          </tr>
+        {% endif %}
+        {% if next %}
+          <tr>
+            {% if user.is_authenticated %}
+              <td class="text">Your account doesn't have access to this page. To proceed, please login with an account that has access.</td>
+            {% else %}
+              <td class="text">Please login to see this page.</td>
+            {% endif %}
+          </tr>
+        {% endif %}
+      </table>
+      <table>
+        <tr>
+          <td class="text">{{ form.username.label_tag }}</td>
+          <td class="text">{{ form.username }}</td>
+        </tr>
+        <tr>
+          <td class="text">{{ form.password.label_tag }}</td>
+          <td class="text">{{ form.password }}</td>
+        </tr>
+        <tr>
+          <td><input class="text button" type="submit" value="login" /></td>
+          <input type="hidden" name="next" value="{{ next }}" />
+        </tr>
+      </table>
     </form>
   </body>
 </html>
