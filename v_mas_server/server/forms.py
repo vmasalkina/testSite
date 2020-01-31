@@ -22,3 +22,4 @@ datetime_input_formats = [
 class RangeForm(forms.Form):
     start = forms.DateTimeField(input_formats=datetime_input_formats)
     end = forms.DateTimeField(input_formats=datetime_input_formats)
+    step = forms.IntegerField()

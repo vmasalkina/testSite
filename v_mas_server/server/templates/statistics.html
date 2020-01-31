@@ -2,40 +2,47 @@
 {% load static %}
 {% block head_block %}
    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-   <script type="text/javascript" src='{% static "get5min.js" %}'></script>
+   <script type="text/javascript" src='{% static "getGraphData.js" %}'></script>
    <script type="text/javascript">
      function getGraph(step) {
       const results = getGraphData({{ data }}, step);
       var container = document.getElementById('graph');
-      var minTrace = {x: results[0], y: results[1]};
-      var maxTrace = {x: results[0], y: results[2]};
-      var aveTrace = {x: results[0], y: results[3]};
-      var graphs = (step == '5') ? [minTrace] : [minTrace, maxTrace, aveTrace];
+      if (results) {
+        var minTrace = {x: results[0], y: results[1]};
+        var maxTrace = {x: results[0], y: results[2]};
+        var aveTrace = {x: results[0], y: results[3]};
+        var graphs = (step == '5') ? [minTrace] : [minTrace, maxTrace, aveTrace];
+      } else {
+	var graphs = [];
+      };
       var layout = {
         showlegend: false,
         height: 500,
         width: 1000,
         xaxis: {
           tick0: results[4],
-          dtick: 300000,
+          dtick: step*60000,
         },
       };
-      Plotly.newPlot( container, graphs, layout);
-     } 
+      Plotly.newPlot(container, graphs, layout);
+     };
+
+     function onButtonClick(step) {
+       getGraph(step);
+       document.querySelector('input[name="step"]').value = step;
+       document.getElementById('5m').className = (step == '5') ? "select" : "";
+       document.getElementById('30m').className = (step == '30') ? "select" : "";
+     }
    </script>
 {% endblock %}
 {% block content %}
   <div id="graph"></div>
   <div class="body">
-      <button id="5m" class="select" type="button" onclick="getGraph('5');
-	                                                    document.getElementById('5m').className = 'select';
-							    document.getElementById('30m').className = '';">
-        <div class="text button">5m</div>
+      <button id="5m" type="button" onclick='onButtonClick("5")'>
+        <div class="text button switch">5m</div>
       </button>
-      <button id="30m" type="button" onclick="getGraph('30');
-	                                      document.getElementById('5m').className = '';
-				              document.getElementById('30m').className = 'select';">
-        <div class="text button">30m</div>
+      <button id="30m" type="button" onclick='onButtonClick("30")'>
+        <div class="text button switch">30m</div>
       </button>
       <div class="text bottom">
         <form method="post" action="{% url 'statistics' %}" >
@@ -44,7 +51,8 @@
           <span class="text bottom">{{ form.start }}</span>
   	  -
           <span class="text bottom">{{ form.end }}</span>
-          <input class="text button" type="submit" value="Показать" /></td>
+          <input class="text button" type="submit" value="Показать" />
+          <input type="hidden" name="step" value={{ form.step }}
         </form>
       </div>
   </div>
@@ -56,7 +64,7 @@
   </div>
 
   <script type="text/javascript">
-      var step = ('select' in document.getElementById('5m').classList) ? '5' : '30';
-      getGraph(step);
+      var step = {{ form.step.value }};
+      onButtonClick(step);
   </script>
 {% endblock %}

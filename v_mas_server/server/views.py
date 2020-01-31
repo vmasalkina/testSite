@@ -16,7 +16,7 @@ def statistics(request):
     if request.method == 'GET':
         end = datetime.datetime.now()
         start = end - datetime.timedelta(days=1)
-        form = RangeForm(initial={'start': start, 'end': end})
+        form = RangeForm(initial={'start': start, 'end': end, 'step': '5'})
     elif request.method == 'POST':
         form = RangeForm(request.POST)
         if form.is_valid():
