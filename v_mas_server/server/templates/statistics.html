@@ -19,10 +19,24 @@
         showlegend: false,
         height: 500,
         width: 1000,
+	margin: {
+          t: 50,
+          b: 100,
+	},
         xaxis: {
           tick0: results[4],
           dtick: step*60000,
+	  tickformat: "%d.%m.%Y\n%H:%M",
+	  tickangle: -90,
         },
+        yaxis: {
+	  showline: true,
+	  tickformat: "d",
+        },
+	font: {
+	  family: "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif",
+	  size: 14,
+	},
       };
       Plotly.newPlot(container, graphs, layout);
      };
@@ -38,12 +52,14 @@
 {% block content %}
   <div id="graph"></div>
   <div class="body">
-      <button id="5m" type="button" onclick='onButtonClick("5")'>
-        <div class="text button switch">5m</div>
-      </button>
-      <button id="30m" type="button" onclick='onButtonClick("30")'>
-        <div class="text button switch">30m</div>
-      </button>
+      <div class="inline">
+        <button id="5m" type="button" onclick='onButtonClick("5")'>
+          <div class="text button switch">5m</div>
+        </button>
+        <button id="30m" type="button" onclick='onButtonClick("30")'>
+          <div class="text button switch">30m</div>
+        </button>
+      </div>
       <div class="text bottom">
         <form method="post" action="{% url 'statistics' %}" >
         {% csrf_token %}
@@ -54,6 +70,9 @@
           <input class="text button" type="submit" value="Показать" />
           <input type="hidden" name="step" value={{ form.step }}
         </form>
+      </div>
+      <div class="text sidebar">
+	 Последнее изменение: {{ client.last_modified|date:"d.m.Y H:i:s" }}
       </div>
   </div>
   <div class="body">

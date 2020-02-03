@@ -5,9 +5,9 @@
     <link rel="stylesheet" href='{% static "style.css" %}'/>
   </head>
   <body>
-    <form method="post" action="{% url 'login' %}">
+    <form class="login" method="post" action="{% url 'login' %}">
     {% csrf_token %}
-      <table>
+      <table class="login">
         {% if form.errors %}
           <tr>
             <td class="text">Your username and password didn't match. Please try again.</td>
@@ -23,7 +23,7 @@
           </tr>
         {% endif %}
       </table>
-      <table>
+      <table class="login">
         <tr>
           <td class="text">{{ form.username.label_tag }}</td>
           <td class="text">{{ form.username }}</td>

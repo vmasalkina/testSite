@@ -1,4 +1,5 @@
 from django import forms
+from server.models import Data
 
 datetime_input_formats = [
     '%d.%m.%Y %H:%M:%S',     # '25.10.2006 14:30:59'
@@ -23,3 +24,8 @@ class RangeForm(forms.Form):
     start = forms.DateTimeField(input_formats=datetime_input_formats)
     end = forms.DateTimeField(input_formats=datetime_input_formats)
     step = forms.IntegerField()
+
+class DataForm(forms.ModelForm):
+    class Meta:
+        model = Data
+        fields = '__all__'
