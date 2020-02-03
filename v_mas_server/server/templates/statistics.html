@@ -18,14 +18,15 @@
       var layout = {
         showlegend: false,
         height: 500,
-        width: 1000,
+        width: 1100,
 	margin: {
           t: 50,
           b: 100,
 	},
         xaxis: {
+	  showline: true,
           tick0: results[4],
-          dtick: step*60000,
+          dtick: 90*60000,
 	  tickformat: "%d.%m.%Y\n%H:%M",
 	  tickangle: -90,
         },
