@@ -26,12 +26,14 @@
         xaxis: {
 	  showline: true,
           tick0: results[4],
-          dtick: 90*60000,
+          dtick: Math.round(results[0].length*step/15)*60000,
 	  tickformat: "%d.%m.%Y\n%H:%M",
 	  tickangle: -90,
         },
         yaxis: {
 	  showline: true,
+          rangemode: "tozero",
+          tick0: 0,
 	  tickformat: "d",
         },
 	font: {
@@ -62,14 +64,14 @@
         </button>
       </div>
       <div class="text bottom">
-        <form method="post" action="{% url 'statistics' %}" >
+        <form method="post" action="{% url 'client_statistics' client_id=client.id %}" >
         {% csrf_token %}
   	  Диапазон:
           <span class="text bottom">{{ form.start }}</span>
   	  -
           <span class="text bottom">{{ form.end }}</span>
           <input class="text button" type="submit" value="Показать" />
-          <input type="hidden" name="step" value={{ form.step }}
+          <input type="hidden" name="step" value={{ form.step.value }}/>
         </form>
       </div>
       <div class="text sidebar">

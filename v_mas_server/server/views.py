@@ -18,7 +18,7 @@ def statistics(request, client_id):
     if request.method == 'GET':
         end = datetime.datetime.now()
         start = end - datetime.timedelta(days=1)
-        form = RangeForm(initial={'start': start, 'end': end, 'step': '5'})
+        form = RangeForm(initial={'start': start.strftime('%d.%m.%Y %H:%M:%S'), 'end': end.strftime('%d.%m.%Y %H:%M:%S'), 'step': '5'})
     elif request.method == 'POST':
         form = RangeForm(request.POST)
         if form.is_valid():
@@ -26,7 +26,7 @@ def statistics(request, client_id):
             start = form.cleaned_data['start']
         else:
             return TemplateResponse(request, 'statistics.html', {'data': {}, 'user': user, 'form': form, 'client': client})
-    d = Data.objects.filter(client=client, timestamp__range=(start, end))
+    d = Data.objects.filter(client=client, timestamp__range=(start, end)).order_by('timestamp')
     data = {i.timestamp.timestamp(): i.value for i in d}
     return TemplateResponse(request, 'statistics.html', {'data': data, 'user': user, 'form': form, 'client': client})
 

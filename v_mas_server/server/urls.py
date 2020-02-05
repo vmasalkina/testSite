@@ -8,7 +8,7 @@ urlpatterns = [
     path('create_user/', create_user, name='create_user'),
     path('delete_user/<int:user_id>/', delete_user, name='delete_user'),
     path('statistics/', common_stat, name='statistics'),
-    path('statistics/<int:client_id>/', statistics),
+    path('statistics/<int:client_id>/', statistics, name='client_statistics'),
     path('users/', users, name='users'),
     path('user_password_change/<int:user_id>/', user_password_change, name='user_password_change'),
     path('client/', client, name='client'),
