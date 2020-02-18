@@ -2,7 +2,7 @@ import redis
 import requests, random, datetime, json
 
 r = redis.StrictRedis(host='localhost', port=6379, db=1, decode_responses=True)
-url = 'https://18.223.102.40/server/client/'
+url = 'https://18.224.24.127/server/client/'
 client_id = 1
 token = '1hkSOF:wM_maJGAYNuDHHtAS3HaV51vLfo'
 headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
